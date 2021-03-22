@@ -31,4 +31,9 @@
       <ProjectReference Include="..\S4C.BL\S4C.BL.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="ClientApp" />
+      <Folder Include="StaticFiles" />
+    </ItemGroup>
+
 </Project>

@@ -5,7 +5,7 @@
 		public static class Swagger
 		{
 			public static string EndPoint => $"../swagger/{Version}/swagger.json";
-			public static string ApiName => "Licences API";
+			public static string ApiName => "licenses API";
 			public static string Version => "v1";
 		}
 

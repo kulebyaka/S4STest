@@ -4,15 +4,18 @@ using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using S4C.DAL;
 using S4S.Web.Configuration;
 using S4S.Web.Filters;
 
@@ -80,6 +83,21 @@ namespace S4S.Web
 			services.AddControllers();
 			services.AddHealthChecks();
 
+			
+			services.AddDbContext<S4SContext>(options =>
+				options.UseSqlServer(
+					Configuration.GetConnectionString("DefaultConnection")));
+			services.AddDatabaseDeveloperPageExceptionFilter();
+
+			services.Configure<FormOptions>(o => {
+				o.ValueLengthLimit = int.MaxValue;
+				o.MultipartBodyLengthLimit = int.MaxValue;
+				o.MemoryBufferThreshold = int.MaxValue;
+			});
+			
+			// services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+			// 	.AddEntityFrameworkStores<ApplicationDbContext>();
+			// services.AddControllersWithViews();
 		}
 
 		public void ConfigureContainer(ContainerBuilder builder)
@@ -101,6 +119,13 @@ namespace S4S.Web
 				app.UseExceptionHandler("/Error");
 				app.UseHsts();
 			}
+			
+			// Create db if not exists
+			using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+			{
+				var context = serviceScope.ServiceProvider.GetRequiredService<S4SContext>();
+				context.Database.Migrate();
+			}
 
 			app.UseHttpsRedirection();
 
@@ -112,11 +137,19 @@ namespace S4S.Web
 				.AllowAnyHeader());
 
 			app.UseSwaggerWithOptions();
+			
+			// app.UseAuthentication();
+			// app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapDefaultControllerRoute();
 				endpoints.MapHealthChecks(Constants.Health.EndPoint);
+				
+				// endpoints.MapControllerRoute(
+				// 	name: "default",
+				// 	pattern: "{controller=Home}/{action=Index}/{id?}");
+				// endpoints.MapRazorPages();
 			});
 		}
 	}

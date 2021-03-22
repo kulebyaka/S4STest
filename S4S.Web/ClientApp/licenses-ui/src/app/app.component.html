@@ -1,0 +1,35 @@
+<article class="container container-fluid">
+  <section class="create">
+    <h1>add license</h1>
+    <form>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" [(ngModel)]="name">
+      </div>
+      <app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
+      <div class="row">
+        <div class="offset-md-5 col-md-2">
+          <button type="button" class="btn btn-primary" (click)="onCreate()">Add</button>
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <section class="users">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">name</th>
+        <th scope="col">Product Count</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let license of licenseList">
+        <td>{{license.name}}</td>
+        <td>{{license.productCount}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+</article>
+

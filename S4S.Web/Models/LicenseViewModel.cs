@@ -5,7 +5,7 @@ namespace S4S.Web.Models
 {
 	public class LicenseViewModel
 	{
-		public Guid Id { get; set; }
+		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Salt { get; set; } 
 		public string Hash { get; set; }

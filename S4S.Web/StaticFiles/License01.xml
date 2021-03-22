@@ -1,0 +1,9 @@
+<License version="1.0">
+	<Products>
+		<Product id="1" name="Product One" />
+	</Products>
+	<Signature>
+		<Salt>salt1#</Salt>
+		<Hash>hash1#</Hash>
+	</Signature>
+</License>
