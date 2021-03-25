@@ -14,11 +14,12 @@ namespace S4C.BL
         {
             // XElement doc = XElement.Load(serializedData);
             var xdoc = XDocument.Parse(serializedData);
+            var prods = xdoc.Root.Descendants("Products").Elements("Product");
             var lic = new License
             {
                 Salt = xdoc.Root.Element("Signature").Elements().First(a=>a.Name == "Salt").Value,
                 Hash = xdoc.Root.Element("Signature").Elements().First(a=>a.Name == "Hash").Value,
-                Products = xdoc.Root.Descendants("Products").Select(a=>new Product()
+                Products =prods.Select(a=>new Product()
                 {
                     Id =  (int)a.Attribute("id"),
                     Name = a.Value

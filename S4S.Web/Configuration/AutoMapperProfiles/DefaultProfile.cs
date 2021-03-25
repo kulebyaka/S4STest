@@ -10,7 +10,8 @@ namespace S4S.Web.Configuration.AutoMapperProfiles
 		public DefaultProfile()
 		{
 			CreateMap<License, LicenseOverviewViewModel>()
-				.ForMember(a=>a.ProductCount, f=>f.MapFrom(b=>b.Products.Count));
+				.ForMember(a=>a.ProductCount, 
+					f=>f.MapFrom(b=>b.Products.Count));
 
 			CreateMap<License, LicenseViewModel>();
 			
